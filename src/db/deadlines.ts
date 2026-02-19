@@ -2,7 +2,7 @@ import { z } from "zod";
 import { getDB } from "./client";
 import { VoterRegistrationDeadlines } from "./types";
 
-const sortableColumns: Array<keyof VoterRegistrationDeadlines> = ["State", "DeadlineInPerson", "DeadlineByMail", "DeadlineOnline"];
+export const sortableColumns: Array<keyof VoterRegistrationDeadlines> = ["State", "DeadlineInPerson", "DeadlineByMail", "DeadlineOnline"];
 
 export const DeadlinesQuerySchema = z.object({
   state: z.string().optional(),

@@ -26,6 +26,7 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
+    "@pandacss/dev": "^1.8.2",
     "@types/pg": "^8.16.0",
     "@types/react": "19.1.8",
     "kysely-codegen": "^0.20.0",

@@ -1,4 +1,11 @@
+import './globals.css'
 import React from "react";
+import { Geist } from 'next/font/google'
+
+const geistSans = Geist({
+  subsets: ['latin'],
+  variable: '--font-geist-sans',
+})
 
 export default function RootLayout({
   children,
@@ -7,7 +14,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <head>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+      </head>
+      <body className={`${geistSans.variable}`}>{children}</body>
     </html>
   );
 }
