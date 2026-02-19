@@ -1,7 +1,6 @@
 "use client";
 
-import { useState, Fragment } from "react";
-import { sortableColumns } from "src/db/deadlines";
+import { useState } from "react";
 import { VoterRegistrationDeadlines } from "src/db/types";
 import { css } from "styled-system/css";
 import Card from "./Card";

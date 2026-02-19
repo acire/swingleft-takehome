@@ -34,7 +34,7 @@ export function RegistrationLink({ url }: { url: string | null }) {
   if (!url) {
     return <span className={css({ color: 'gray.400' })}>—</span>;
   }
-  return <a className={linkStyles} href={url} target="_blank">Register Online</a>;
+  return <a className={linkStyles} href={url} target="_blank" rel="noopener noreferrer">Register Online</a>;
 }
 
 export function StateName({ deadline }: { deadline: VoterRegistrationDeadlines }) {
@@ -60,3 +60,11 @@ function hasImportantDescription(d: VoterRegistrationDeadlines): boolean {
 }
 
 export type SortableColumn = typeof sortableColumns[number];
+
+export function formatDate(date: string): string {
+  return new Date(date).toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  });
+}

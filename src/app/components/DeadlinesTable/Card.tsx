@@ -1,7 +1,7 @@
 "use client";
 import { VoterRegistrationDeadlines } from "src/db/types";
 import { css } from "styled-system/css";
-import { RegistrationLink, StateName } from "./shared";
+import { formatDate, RegistrationLink, StateName } from "./shared";
 
 const cardStyles = css({
   border: '1px solid',
@@ -25,22 +25,22 @@ const cardValueStyles = css({
 
 export default function Card({ deadline }: { deadline: VoterRegistrationDeadlines }) {
   return (
-    <div key={deadline.State} className={cardStyles}>
+    <div className={cardStyles}>
       <div className={css({ fontWeight: 'bold', fontSize: 'md', display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '1' })}>
         <StateName deadline={deadline} />
       </div>
       <div className={css({ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '2' })}>
         <div>
           <span className={cardLabelStyles}>In Person</span>
-          <p className={cardValueStyles}>{deadline.DeadlineInPerson ?? "—"}</p>
+          <p className={cardValueStyles}>{deadline.DeadlineInPerson ? formatDate(deadline.DeadlineInPerson) : "—"}</p>
         </div>
         <div>
           <span className={cardLabelStyles}>By Mail</span>
-          <p className={cardValueStyles}>{deadline.DeadlineByMail ?? "—"}</p>
+          <p className={cardValueStyles}>{deadline.DeadlineByMail ? formatDate(deadline.DeadlineByMail) : "—"}</p>
         </div>
         <div>
           <span className={cardLabelStyles}>Online</span>
-          <p className={cardValueStyles}>{deadline.DeadlineOnline ?? "—"}</p>
+          <p className={cardValueStyles}>{deadline.DeadlineOnline ? formatDate(deadline.DeadlineOnline) : "—"}</p>
         </div>
         <div>
           <span className={cardLabelStyles}>Register</span>

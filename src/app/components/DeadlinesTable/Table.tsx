@@ -1,7 +1,7 @@
 "use client";
 import { VoterRegistrationDeadlines } from "src/db/types";
 import { css } from "styled-system/css";
-import { RegistrationLink, SortableColumn, StateName } from "./shared";
+import { formatDate, RegistrationLink, SortableColumn, StateName } from "./shared";
 import { Fragment, useState } from "react";
 
 const TABLE_COLUMNS = 5;
@@ -37,7 +37,7 @@ const tableStyles = css({
     fontSize: 'sm',
     color: 'gray.600',
   },
-  '& tbody tr:last-child td': {
+  '& tbody:last-child tr:last-child td': {
     borderBottom: 'none',
   },
 });
@@ -50,17 +50,16 @@ const sortableHeaderStyles = css({
   },
 });
 
-const rowStyles = css({
+const rowGroupStyles = css({
   cursor: 'pointer',
-  '&:hover': {
+  '&:hover td': {
     backgroundColor: 'gray.50',
   },
 });
 
 const expandedRowStyles = css({
   '& td': {
-    backgroundColor: 'gray.50',
-    borderBottom: 'none',
+    paddingTop: '0',
   },
 });
 
@@ -91,57 +90,70 @@ export default function Table({ deadlines, search, handleSort, sortIndicator }: 
             <th>Register Online</th>
           </tr>
         </thead>
-        <tbody>
-          {deadlines.length === 0 ? (
+        {deadlines.length === 0 ? (
+          <tbody>
             <tr>
               <td colSpan={TABLE_COLUMNS} className={css({ textAlign: 'center', padding: '8', color: 'gray.400' })}>
                 No states match &ldquo;{search}&rdquo;
               </td>
             </tr>
-          ) : (
-            deadlines.map((deadline) => {
-              const isExpanded = expandedState === deadline.State;
-              return (
-                <Fragment key={deadline.State}>
-                  <tr
-                    className={rowStyles}
-                    onClick={() => toggleExpand(deadline.State)}
-                  >
-                    <td>
-                      <span className={css({ display: 'inline-flex', alignItems: 'center', verticalAlign: 'middle', marginRight: '1' })}>
-                        <span className="material-symbols-outlined" style={{ fontSize: '18px', transition: 'transform 0.2s', transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)' }}>
-                          expand_more
-                        </span>
+          </tbody>
+        ) : (
+          deadlines.map((deadline) => {
+            const isExpanded = expandedState === deadline.State;
+            return (
+              <tbody
+                key={deadline.State}
+                className={rowGroupStyles}
+                onClick={() => toggleExpand(deadline.State)}
+              >
+                <tr className={isExpanded ? css({ '& td': { borderBottom: 'none' } }) : ''}>
+                  <td>
+                    <span className={css({ display: 'inline-flex', alignItems: 'center', verticalAlign: 'middle', marginRight: '1' })}>
+                      <span className="material-symbols-outlined" style={{ fontSize: '18px', transition: 'transform 0.2s', transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)' }}>
+                        expand_more
                       </span>
-                      <StateName deadline={deadline} />
+                    </span>
+                    <StateName deadline={deadline} />
+                  </td>
+                  <td>{deadline.DeadlineInPerson ? formatDate(deadline.DeadlineInPerson) : "—"}</td>
+                  <td>{deadline.DeadlineByMail ? formatDate(deadline.DeadlineByMail) : "—"}</td>
+                  <td>{deadline.DeadlineOnline ? formatDate(deadline.DeadlineOnline) : "—"}</td>
+                  <td><RegistrationLink url={deadline.OnlineRegistrationLink} /></td>
+                </tr>
+                {isExpanded && (
+                  <tr className={expandedRowStyles}>
+                    <td colSpan={TABLE_COLUMNS}>
+                      <div className={css({
+                        marginLeft: '5',
+                        paddingLeft: '1',
+                        paddingBottom: '2',
+                        fontSize: 'sm',
+                        color: 'gray.600',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '1',
+                      })}>
+                        {deadline.Description && (
+                          <p>{deadline.Description}</p>
+                        )}
+                        {deadline.ElectionDayRegistration && (
+                          <p>
+                            <span className={css({ fontWeight: '600' })}>Election Day Registration: </span>
+                            {deadline.ElectionDayRegistration}
+                          </p>
+                        )}
+                        {!deadline.Description && !deadline.ElectionDayRegistration && (
+                          <p className={css({ color: 'gray.400', fontStyle: 'italic' })}>No additional details available.</p>
+                        )}
+                      </div>
                     </td>
-                    <td>{deadline.DeadlineInPerson ?? "—"}</td>
-                    <td>{deadline.DeadlineByMail ?? "—"}</td>
-                    <td>{deadline.DeadlineOnline ?? "—"}</td>
-                    <td><RegistrationLink url={deadline.OnlineRegistrationLink} /></td>
                   </tr>
-                  {isExpanded && (
-                    <tr className={expandedRowStyles}>
-                      <td colSpan={TABLE_COLUMNS}>
-                        <div className={css({ padding: '2', fontSize: 'sm', color: 'gray.600' })}>
-                          {deadline.Description
-                            ? deadline.Description
-                            : <span className={css({ color: 'gray.400', fontStyle: 'italic' })}>No additional details available.</span>
-                          }
-                          {deadline.ElectionDayRegistration && (
-                            <p className={css({ marginTop: '1', fontWeight: '500' })}>
-                              Election Day Registration: {deadline.ElectionDayRegistration}
-                            </p>
-                          )}
-                        </div>
-                      </td>
-                    </tr>
-                  )}
-                </Fragment>
-              );
-            })
-          )}
-        </tbody>
+                )}
+              </tbody>
+            );
+          })
+        )}
       </table>
     </div>
   );

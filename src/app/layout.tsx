@@ -1,11 +1,17 @@
 import './globals.css'
 import React from "react";
 import { Geist } from 'next/font/google'
+import { Metadata } from 'next';
 
 const geistSans = Geist({
   subsets: ['latin'],
   variable: '--font-geist-sans',
 })
+
+export const metadata: Metadata = {
+  title: "Voter Registration Deadlines",
+  description: "Find your state's voter registration deadlines",
+}
 
 export default function RootLayout({
   children,
