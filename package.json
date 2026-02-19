@@ -3,11 +3,12 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "kysely:generate": "DATABASE_URL=postgres://postgres:test@localhost:5432/state_registration_deadlines kysely-codegen --out-file ./src/db/types.ts",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "vitest",
     "db:create-db": "node ./scripts/create-db.js",
     "db:drop-db": "node ./scripts/drop-db.js"
   },
@@ -17,17 +18,18 @@
   "description": "",
   "dependencies": {
     "csv-parser": "^3.2.0",
+    "kysely": "^0.28.11",
     "next": "^15.3.4",
-    "pg": "^8.16.1",
-    "pg-hstore": "^2.3.4",
+    "pg": "^8.18.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "sequelize": "^6.37.7",
-    "sequelize-typescript": "^2.1.6",
-    "sqlite3": "^5.1.7"
+    "zod": "^4.3.6"
   },
   "devDependencies": {
+    "@types/pg": "^8.16.0",
     "@types/react": "19.1.8",
-    "typescript": "5.8.3"
+    "kysely-codegen": "^0.20.0",
+    "typescript": "5.8.3",
+    "vitest": "^4.0.18"
   }
 }
