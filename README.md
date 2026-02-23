@@ -69,6 +69,8 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
+**Note:** The app must run on port 3000 since the API URL is configured to `localhost:3000` in `.env`. If port 3000 is already in use, free it up before starting, or update `API_URL` in `.env` to match the port Next.js assigns (shown in the terminal output).
+
 ## Running Tests
 
 Tests run against the real database, so make sure PostgreSQL is running and seeded first.
